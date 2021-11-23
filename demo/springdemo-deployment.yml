@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springdemo
+  labels:
+    k8s-app: springdemo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      k8s-app: springdemo
+  template:
+    metadata:
+      labels:
+        k8s-app: springdemo
+    spec:
+      containers:
+      - name: springdemo
+        image: icr.io/ibmdemo/springdemo:v1 
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springdemo
+  labels:
+    k8s-app: springdemo 
+spec:
+  selector:
+    k8s-app: springdemo
+  type: NodePort
+  ports:
+   - port: 8080
